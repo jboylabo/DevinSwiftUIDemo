@@ -1,6 +1,17 @@
 # DevinSwiftUIDemo
 
-SwiftUI で作る iOS デモアプリです。現在は `ContentView` に SF Symbols の地球アイコンと `Hello, world!` を表示する最小構成で、今後はシェーダーを使った地球の回転グラフィックを実装する予定です。
+SwiftUI と Metal シェーダー（`ShaderLibrary` / `colorEffect` + `TimelineView`）を使って、宇宙空間で地球がくるくる回転する 3D グラフィックを描画する iOS デモアプリです。
+
+## 主な機能
+
+- **Metal プロシージャル地球シェーダー（`EarthShader.metal`）**:
+  - 球体との交差・法線計算による立体表現と、地軸の傾き（約 23.4°）を考慮した自転アニメーション
+  - 3D FBM ノイズによる海・大陸・砂漠・森林・山脈・極冠・雲レイヤーのプロシージャル生成
+  - 太陽光による陰影・海洋のスペキュラ反射・昼夜境界（ターミネーター）の夕焼け表現・夜側の都市の明かり
+  - 大気のフレネル発光・外周ハロー・星空背景
+- **インタラクティブ操作（`EarthView.swift`）**:
+  - ドラッグ操作による手動回転・チルト調整
+  - 再生 / 一時停止、回転速度切替（`0.5x` / `1x` / `2x`）、リセットボタン
 
 ## 要件
 
@@ -39,10 +50,8 @@ xcodebuild -project DevinSwiftUIDemo.xcodeproj -target DevinSwiftUIDemo -destina
 ## プロジェクト構成
 
 - `DevinSwiftUIDemo/DevinSwiftUIDemoApp.swift`: アプリのエントリポイント（`@main`）
-- `DevinSwiftUIDemo/ContentView.swift`: メイン画面
+- `DevinSwiftUIDemo/ContentView.swift`: ルート画面（`EarthView` を表示）
+- `DevinSwiftUIDemo/EarthView.swift`: `TimelineView` とドラッグ操作・コントロールを備えた地球ビュー
+- `DevinSwiftUIDemo/EarthShader.metal`: SwiftUI `colorEffect` 向け Metal シェーダー（`earthShader`）
 - `DevinSwiftUIDemo/Assets.xcassets`: アプリアイコンと Accent Color
 - `DevinSwiftUIDemo.xcodeproj`: Xcode プロジェクト
-
-## 今後の実装予定
-
-- SwiftUI のシェーダー機能を使って、地球がくるくる回転するグラフィックを作る
